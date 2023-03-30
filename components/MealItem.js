@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
   Image,
@@ -7,9 +8,14 @@ import {
   Text,
   View,
 } from "react-native";
+import MealDetail from "./MealDetail";
 
-function MealItem({ title, imageUrl, duration, complexity, affordability }) {
-  console.log(title);
+function MealItem({id, title, imageUrl, duration, complexity, affordability, onPress }) {
+
+const navigation=useNavigation()
+   const mealHandler=()=>{
+    navigation.navigate('CategoryDetailScreen',{mealId:id})
+   }
   return (
     <View style={styles.mealItem}>
       <Pressable
@@ -17,7 +23,9 @@ function MealItem({ title, imageUrl, duration, complexity, affordability }) {
         style={({ pressed }) => [
           
           pressed ?styles.buttonPressed : null,
+          
         ]}
+        onPress={mealHandler}
        
       >
         <View style={{ borderRadius: 8, overflow: "hidden" }}>
@@ -25,11 +33,12 @@ function MealItem({ title, imageUrl, duration, complexity, affordability }) {
             <Image source={{ uri: imageUrl }} style={styles.image} />
             <Text style={styles.title}>{title}</Text>
           </View>
-          <View style={styles.details}>
+          {/* <View style={styles.details}>
             <Text style={styles.detailItem}>{duration}</Text>
             <Text style={styles.detailItem}>{complexity.toUpperCase()}</Text>
             <Text style={styles.detailItem}>{affordability.toUpperCase()}</Text>
-          </View>
+          </View> */}
+          <MealDetail duration={duration} affordability={affordability} complexity={complexity}/>
         </View>
       </Pressable>
     </View>
@@ -60,16 +69,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     margin: 8,
   },
-  details: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 8,
-    justifyContent: "center",
-  },
-  detailItem: {
-    marginHorizontal: 4,
-    fontSize: 12,
-  },
+ 
   buttonPressed: {
     opacity: 0.9,
   },
